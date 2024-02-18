@@ -1,0 +1,17 @@
+    public function create()
+    {
+
+         $MarketSalami = NagorikMarketBooking::with('user', 'paymentModel', 'marketname', 'shoploacation')
+            ->where('status', 0)
+            ->whereHas('paymentModel', function ($query) {
+                $query->where('status', 0);
+            })
+            ->get();
+
+        $accounts = Account::where('balance_type', 'credit')
+            ->where('account_group_id', 1)
+            ->where('status', 1)->get();
+
+
+        return view('Admin.Payment.Market-salami-Payment.create', compact('MarketSalami', 'accounts'));
+    }
